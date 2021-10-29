@@ -1,4 +1,4 @@
-package tuition;
+package com.example.project3;
 
 /**
  * TriState class defines the basic data for a student living in the tri state area.

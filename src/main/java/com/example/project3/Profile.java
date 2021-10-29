@@ -1,4 +1,4 @@
-package tuition;
+package com.example.project3;
 
 /**
  * The profile class defines the data for a student

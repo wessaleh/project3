@@ -1,4 +1,4 @@
-package tuition;
+package com.example.project3;
 
 /**
  * Major enums

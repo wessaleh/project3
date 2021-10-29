@@ -1,4 +1,4 @@
-package tuition;
+package com.example.project3;
 
 /**
  * NonResident class defines the basic data for a non-resident student.

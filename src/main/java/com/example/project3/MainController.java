@@ -3,6 +3,7 @@ package com.example.project3;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -11,6 +12,9 @@ public class MainController {
 
     @FXML
     private RadioButton ba;
+
+    @FXML
+    private RadioButton ba2;
 
     @FXML
     private RadioButton connecticut;
@@ -22,7 +26,16 @@ public class MainController {
     private RadioButton cs;
 
     @FXML
+    private RadioButton cs2;
+
+    @FXML
     private RadioButton ee;
+
+    @FXML
+    private RadioButton ee2;
+
+    @FXML
+    private TextField finAid;
 
     @FXML
     private RadioButton international;
@@ -31,10 +44,19 @@ public class MainController {
     private RadioButton it;
 
     @FXML
+    private RadioButton it2;
+
+    @FXML
     private RadioButton me;
 
     @FXML
+    private RadioButton me2;
+
+    @FXML
     private TextField name;
+
+    @FXML
+    private TextField name2;
 
     @FXML
     private RadioButton new_york;
@@ -46,6 +68,18 @@ public class MainController {
     private TextArea output;
 
     @FXML
+    private TextArea output2;
+
+    @FXML
+    private TextArea output3;
+
+    @FXML
+    private DatePicker paymentDate;
+
+    @FXML
+    private TextField payments;
+
+    @FXML
     private RadioButton resident;
 
     @FXML
@@ -54,8 +88,47 @@ public class MainController {
     @FXML
     private RadioButton tristate;
 
+    private Roster roster;
+
+    /**
+     * Main Controller Constructor
+     */
+    public MainController(){
+        roster = new Roster();
+    }
+
     @FXML
     void addStudent(ActionEvent event) {
+
+    }
+
+    @FXML
+    void calculateTuitionDues(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pay(ActionEvent event) {
+
+    }
+
+    @FXML
+    void printByNames(ActionEvent event) {
+        roster.printRosterByNames(output3);
+    }
+
+    @FXML
+    void printByPaymentDates(ActionEvent event) {
+        roster.printRosterByPaymentDates(output3);
+    }
+
+    @FXML
+    void printRoster(ActionEvent event) {
+        roster.printRoster(output3);
+    }
+
+    @FXML
+    void printTuitionDue(ActionEvent event) {
 
     }
 
@@ -65,17 +138,7 @@ public class MainController {
     }
 
     @FXML
-    void setCredits(ActionEvent event) {
-
-    }
-
-    @FXML
-    void setName(ActionEvent event) {
-
-    }
-
-    @FXML
-    void tuitionDue(ActionEvent event) {
+    void setFinAid(ActionEvent event) {
 
     }
 
@@ -104,11 +167,6 @@ public class MainController {
         connecticut.setDisable(false);
     }
 
-    @FXML
-    void setMajor(ActionEvent event) {
-
-    }
-
     void disableResidentButtons(){
         tristate.setDisable(true);
         tristate.setSelected(false);
@@ -135,5 +193,7 @@ public class MainController {
             international.setDisable(false);
         }
     }
+
+
 
 }

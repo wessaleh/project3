@@ -1,4 +1,6 @@
-package tuition;
+package com.example.project3;
+
+import javafx.scene.control.TextArea;
 
 /**
  * Roster class keeps track of a list of students
@@ -276,61 +278,67 @@ public class Roster {
     /**
      * Prints the roster
      */
-    public void printRoster() {
+    public void printRoster(TextArea textArea) {
+        textArea.clear();
+
         if(this.size == 0) {
-            System.out.println("Student roster is empty!");
+            textArea.appendText("Student roster is empty! \n");
             return;
         }
 
-        System.out.println("* list of students in the roster **");
+        textArea.appendText("* list of students in the roster ** \n");
 
         for(int i = 0; i < size; i++){
-            System.out.println(this.roster[i].toString());
+            textArea.appendText(this.roster[i].toString() + "\n");
         }
 
-        System.out.println("* end of roster **");
+        textArea.appendText("* end of roster ** \n");
     }
 
     /**
      * Prints the roster by names
      */
-    public void printRosterByNames() {
+    public void printRosterByNames(TextArea textArea) {
+        textArea.clear();
+
         if(this.size == 0) {
-            System.out.println("Student roster is empty!");
+            textArea.appendText("Student roster is empty! \n");
             return;
         }
 
         this.sortByNames();
 
-        System.out.println("* list of students ordered by name **");
+        textArea.appendText("* list of students ordered by name ** \n");
 
         for(int i = 0; i < size; i++){
-            System.out.println(this.roster[i].toString());
+            textArea.appendText(this.roster[i].toString() + "\n");
         }
 
-        System.out.println("* end of roster **");
+        textArea.appendText("* end of roster ** \n");
     }
 
     /**
      * Prints the roster by payment dates
      */
-    public void printRosterByPaymentDates() {
+    public void printRosterByPaymentDates(TextArea textArea) {
+        textArea.clear();
+
         if(this.size == 0) {
-            System.out.println("Student roster is empty!");
+            textArea.appendText("Student roster is empty! \n");
             return;
         }
 
         Student[] sortedRoster = this.sortByPaymentDates();
 
-        System.out.println("* list of students made payments ordered by payment date **");
+        textArea.appendText("* list of students made payments ordered by payment date ** \n");
 
         for(int i = 0; i < size; i++){
             if(sortedRoster[i] == null){
                 break;
             }
-            System.out.println(sortedRoster[i].toString());
+            textArea.appendText(this.roster[i].toString() + "\n");
         }
 
-        System.out.println("* end of roster **");
+        textArea.appendText("* end of roster ** \n");
     }
 }

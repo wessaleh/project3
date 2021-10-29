@@ -1,4 +1,4 @@
-package tuition;
+package com.example.project3;
 
 /**
  * International class defines the basic data for an International student.
