@@ -146,7 +146,7 @@
                                           <Button mnemonicParsing="false" onAction="#printTuitionDue" prefHeight="26.0" prefWidth="87.0" text="Tuition Due" />
                                           <HBox prefHeight="26.0" prefWidth="26.0" />
                                           <Label text="\$" />
-                                          <TextField onAction="#tuitionOutput" prefHeight="26.0" prefWidth="175.0" promptText="0.00" />
+                                          <TextField fx:id="tuitionOutput" editable="false" onAction="#printTuitionDue" prefHeight="26.0" prefWidth="175.0" promptText="0.00" />
                                        </children>
                                     </HBox>
                                  </children>

@@ -203,6 +203,21 @@ public class Roster {
     }
 
     /**
+     * Calculates tuition for one student
+     * @param student - student to calculate for
+     * @return the student's tuition
+     */
+    public double calculateTuitionForStudent(Student student){
+        int studentIndex = this.find(student);
+        if(studentIndex == INVALID){
+            return -1;
+        }
+
+        this.roster[studentIndex].tuitionDue();
+        return this.roster[studentIndex].tuition;
+    }
+
+    /**
      * Calculates tuition for all students
      */
     public void calculateTuitionForAllStudents() {

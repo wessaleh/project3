@@ -98,6 +98,9 @@ public class MainController {
     @FXML
     private RadioButton tristate;
 
+    @FXML
+    private TextField tuitionOutput;
+
     private Roster roster;
 
     /**
@@ -347,9 +350,14 @@ public class MainController {
             output.appendText("Student status has not been selected \n");
     }
 
+    /**
+     * Calculates tuition dues for all students
+     * @param event - the event to be handled
+     */
     @FXML
     void calculateTuitionDues(ActionEvent event) {
-
+        roster.calculateTuitionForAllStudents();
+        output3.appendText("Calculation completed. \n");
     }
 
     @FXML
@@ -384,9 +392,29 @@ public class MainController {
         roster.printRoster(output3);
     }
 
+    /**
+     * prints the tuition due for a student
+     * @param event - the event to be handled
+     */
     @FXML
     void printTuitionDue(ActionEvent event) {
+        Profile studentProfile = buildStudentProfile();
 
+        if(studentProfile == null){
+            return;
+        }
+
+        int dummyCredits = 0;
+
+        Student studentToCalculate = new Student(studentProfile, dummyCredits);
+        double tuition = roster.calculateTuitionForStudent(studentToCalculate);
+
+        if(tuition == -1.0){
+            output.appendText("Student is not in the roster. \n");
+        }else{
+            tuitionOutput.clear();
+            tuitionOutput.appendText(tuition + "");
+        }
     }
 
     /**
@@ -416,11 +444,10 @@ public class MainController {
 
     }
 
-    @FXML
-    void tuitionOutput(ActionEvent event) {
-
-    }
-
+    /**
+     * Enables study abroad options if international is selected
+     * @param event - the event to be handled
+     */
     @FXML
     void enableStudyAbroadOption(ActionEvent event) {
         new_york.setDisable(true);
@@ -432,6 +459,10 @@ public class MainController {
         studyAbroad.setDisable(false);
     }
 
+    /**
+     * Enables Tristate Options if tristate is selected
+     * @param event - the event to be handled
+     */
     @FXML
     void enableTristateOptions(ActionEvent event) {
         studyAbroad.setSelected(false);
@@ -441,6 +472,9 @@ public class MainController {
         connecticut.setDisable(false);
     }
 
+    /**
+     * disables all tristate and international options
+     */
     void disableResidentButtons(){
         tristate.setDisable(true);
         tristate.setSelected(false);
@@ -458,6 +492,11 @@ public class MainController {
         studyAbroad.setSelected(false);
     }
 
+    /**
+     * sets resident status buttons to default selection
+     * disables tri-state and international options
+     * @param event - the event to be handled
+     */
     @FXML
     void setResidentStatus(ActionEvent event) {
         disableResidentButtons();
