@@ -175,8 +175,36 @@ public class MainController {
         }
     }
 
+    /**
+     * Adds a non-resident student to the roster
+     * @param profile - the profile of the student to add
+     */
     public void addNonResidentStudent(Profile profile){
+        int creditHours = MINIMUM_NUM_CREDITS;
 
+        try {
+            creditHours = Integer.parseInt(credits.getText());
+        }catch(NumberFormatException badInput){
+            output.appendText("Invalid credit hours. \n");
+            return;
+        }
+
+        if(creditHours < MINIMUM_NUM_CREDITS){
+            output.appendText("Minimum credit hours is 3. \n");
+            return;
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+            output.appendText("Credit hours exceed the maximum 24. \n");
+            return;
+        }
+
+        NonResident nonResidentStudent = new NonResident(profile, creditHours);
+        boolean studentAdded = roster.add(nonResidentStudent);
+
+        if(studentAdded){
+            output.appendText("Student added. \n");
+        }else{
+            output.appendText("Student is already in the roster. \n");
+        }
     }
 
     public void addTriStateStudent(Profile profile){
