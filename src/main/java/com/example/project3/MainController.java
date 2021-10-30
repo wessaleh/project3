@@ -14,6 +14,7 @@ public class MainController {
 
     private final int MINIMUM_NUM_CREDITS = 3;
     private final int MAXIMUM_NUM_CREDITS = 24;
+    private final int MINIMUM_FULLTIME_CREDITS = 12;
 
     @FXML
     private RadioButton ba;
@@ -157,7 +158,10 @@ public class MainController {
             return;
         }
 
-        if(creditHours < MINIMUM_NUM_CREDITS){
+        if(creditHours < 0){
+            output.appendText("Credit hours cannot be negative. \n");
+            return;
+        }else if(creditHours < MINIMUM_NUM_CREDITS){
             output.appendText("Minimum credit hours is 3. \n");
             return;
         }else if(creditHours > MAXIMUM_NUM_CREDITS){
@@ -189,7 +193,10 @@ public class MainController {
             return;
         }
 
-        if(creditHours < MINIMUM_NUM_CREDITS){
+        if(creditHours < 0){
+            output.appendText("Credit hours cannot be negative. \n");
+            return;
+        }else if(creditHours < MINIMUM_NUM_CREDITS){
             output.appendText("Minimum credit hours is 3. \n");
             return;
         }else if(creditHours > MAXIMUM_NUM_CREDITS){
@@ -207,12 +214,90 @@ public class MainController {
         }
     }
 
+    /**
+     * Adds tristate student to roster
+     * @param profile - the profile of the student to add
+     */
     public void addTriStateStudent(Profile profile){
+        int creditHours = MINIMUM_NUM_CREDITS;
 
+        try {
+            creditHours = Integer.parseInt(credits.getText());
+        }catch(NumberFormatException badInput){
+            output.appendText("Invalid credit hours. \n");
+            return;
+        }
+
+        if(creditHours < 0){
+            output.appendText("Credit hours cannot be negative. \n");
+            return;
+        }else if(creditHours < MINIMUM_NUM_CREDITS){
+            output.appendText("Minimum credit hours is 3. \n");
+            return;
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+            output.appendText("Credit hours exceed the maximum 24. \n");
+            return;
+        }
+
+        String stateCode = "";
+
+        if(new_york.isSelected()){
+            stateCode = "NY";
+        }else if(connecticut.isSelected()){
+            stateCode = "CT";
+        }else{
+            output.appendText("State has not been selected. \n");
+            return;
+        }
+
+        TriState tristateStudent = new TriState(profile, creditHours, stateCode);
+        boolean studentAdded = roster.add(tristateStudent);
+
+        if(studentAdded){
+            output.appendText("Student added. \n");
+        }else{
+            output.appendText("Student is already in the roster. \n");
+        }
     }
 
+    /**
+     * Adds an international student to the roster
+     * @param profile - the profile of the student to add
+     */
     public void addInternationalStudent(Profile profile){
+        int creditHours = MINIMUM_NUM_CREDITS;
 
+        try {
+            creditHours = Integer.parseInt(credits.getText());
+        }catch(NumberFormatException badInput){
+            output.appendText("Invalid credit hours. \n");
+            return;
+        }
+
+        if(creditHours < 0){
+            output.appendText("Credit hours cannot be negative. \n");
+            return;
+        }else if(creditHours < MINIMUM_NUM_CREDITS){
+            output.appendText("Minimum credit hours is 3. \n");
+            return;
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+            output.appendText("Credit hours exceed the maximum 24. \n");
+            return;
+        }
+
+        if(creditHours < MINIMUM_FULLTIME_CREDITS){
+            output.appendText("International students must enroll at least 12 credits. \n");
+            return;
+        }
+
+        International internationalStudent = new International(profile, creditHours, studyAbroad.isSelected());
+        boolean studentAdded = roster.add(internationalStudent);
+
+        if(studentAdded){
+            output.appendText("Student added. \n");
+        }else{
+            output.appendText("Student is already in the roster. \n");
+        }
     }
 
     /**
@@ -335,7 +420,5 @@ public class MainController {
             international.setDisable(false);
         }
     }
-
-
 
 }
