@@ -1,3 +1,7 @@
+/**
+ * Controller class for GUI for tuition manager
+ */
+
 package com.example.project3;
 
 import javafx.event.ActionEvent;
@@ -120,7 +124,7 @@ public class MainController {
         else if(ba.isSelected())
             return Major.BA;
         else
-            throw new InputMismatchException();
+            throw new InputMismatchException(); // Major hasn't been selected yet
     }
 
     /**
@@ -128,12 +132,14 @@ public class MainController {
      * @return student profile
      */
     private Profile buildStudentProfile(){
+        // getting student name
         String studentName = name.getText();
         if(studentName.isEmpty()){
             output.appendText("Student name field is empty. \n");
             return null;
         }
 
+        // getting student major
         try{
             Major major = getMajor();
             return new Profile(studentName, major);
@@ -151,6 +157,7 @@ public class MainController {
     public void addResidentStudent(Profile profile){
         int creditHours = MINIMUM_NUM_CREDITS;
 
+        // validating credit hours
         try {
             creditHours = Integer.parseInt(credits.getText());
         }catch(NumberFormatException badInput){
@@ -158,17 +165,18 @@ public class MainController {
             return;
         }
 
-        if(creditHours < 0){
+        if(creditHours < 0){ // credit hours negative
             output.appendText("Credit hours cannot be negative. \n");
             return;
-        }else if(creditHours < MINIMUM_NUM_CREDITS){
+        }else if(creditHours < MINIMUM_NUM_CREDITS){ // less than min
             output.appendText("Minimum credit hours is 3. \n");
             return;
-        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){ // greater than max
             output.appendText("Credit hours exceed the maximum 24. \n");
             return;
         }
 
+        // adding student to roster
         Resident residentStudent = new Resident(profile, creditHours);
         boolean studentAdded = roster.add(residentStudent);
 
@@ -186,6 +194,7 @@ public class MainController {
     public void addNonResidentStudent(Profile profile){
         int creditHours = MINIMUM_NUM_CREDITS;
 
+        // validating credit hours
         try {
             creditHours = Integer.parseInt(credits.getText());
         }catch(NumberFormatException badInput){
@@ -193,17 +202,18 @@ public class MainController {
             return;
         }
 
-        if(creditHours < 0){
+        if(creditHours < 0){ // credit hours negative
             output.appendText("Credit hours cannot be negative. \n");
             return;
-        }else if(creditHours < MINIMUM_NUM_CREDITS){
+        }else if(creditHours < MINIMUM_NUM_CREDITS){ // less than min
             output.appendText("Minimum credit hours is 3. \n");
             return;
-        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){ // greater than max
             output.appendText("Credit hours exceed the maximum 24. \n");
             return;
         }
 
+        // adding student to roster
         NonResident nonResidentStudent = new NonResident(profile, creditHours);
         boolean studentAdded = roster.add(nonResidentStudent);
 
@@ -221,6 +231,7 @@ public class MainController {
     public void addTriStateStudent(Profile profile){
         int creditHours = MINIMUM_NUM_CREDITS;
 
+        // validating credit hours
         try {
             creditHours = Integer.parseInt(credits.getText());
         }catch(NumberFormatException badInput){
@@ -228,19 +239,20 @@ public class MainController {
             return;
         }
 
-        if(creditHours < 0){
+        if(creditHours < 0){ // negative credits
             output.appendText("Credit hours cannot be negative. \n");
             return;
-        }else if(creditHours < MINIMUM_NUM_CREDITS){
+        }else if(creditHours < MINIMUM_NUM_CREDITS){ // less than min
             output.appendText("Minimum credit hours is 3. \n");
             return;
-        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){ // greater than max
             output.appendText("Credit hours exceed the maximum 24. \n");
             return;
         }
 
         String stateCode = "";
 
+        // getting state code
         if(new_york.isSelected()){
             stateCode = "NY";
         }else if(connecticut.isSelected()){
@@ -250,6 +262,7 @@ public class MainController {
             return;
         }
 
+        // adding student to roster
         TriState tristateStudent = new TriState(profile, creditHours, stateCode);
         boolean studentAdded = roster.add(tristateStudent);
 
@@ -267,6 +280,7 @@ public class MainController {
     public void addInternationalStudent(Profile profile){
         int creditHours = MINIMUM_NUM_CREDITS;
 
+        // validating credit hours
         try {
             creditHours = Integer.parseInt(credits.getText());
         }catch(NumberFormatException badInput){
@@ -274,22 +288,23 @@ public class MainController {
             return;
         }
 
-        if(creditHours < 0){
+        if(creditHours < 0){ // negative credits
             output.appendText("Credit hours cannot be negative. \n");
             return;
-        }else if(creditHours < MINIMUM_NUM_CREDITS){
+        }else if(creditHours < MINIMUM_NUM_CREDITS){ // less than min
             output.appendText("Minimum credit hours is 3. \n");
             return;
-        }else if(creditHours > MAXIMUM_NUM_CREDITS){
+        }else if(creditHours > MAXIMUM_NUM_CREDITS){ // greater than max
             output.appendText("Credit hours exceed the maximum 24. \n");
             return;
         }
 
-        if(creditHours < MINIMUM_FULLTIME_CREDITS){
+        if(creditHours < MINIMUM_FULLTIME_CREDITS){ // part-time international not valid
             output.appendText("International students must enroll at least 12 credits. \n");
             return;
         }
 
+        // adding student to roster
         International internationalStudent = new International(profile, creditHours, studyAbroad.isSelected());
         boolean studentAdded = roster.add(internationalStudent);
 
@@ -306,17 +321,20 @@ public class MainController {
      */
     @FXML
     void addStudent(ActionEvent event) {
+        // building student profile
         Profile studentProfile = buildStudentProfile();
-        if(studentProfile == null){
+        if(studentProfile == null){ // either major or name was not selected
             return;
         }
 
+        // determining which type of student this student is
         boolean isResidentStudent = resident.isSelected();
         boolean isNonResidentStudent = non_resident.isSelected() &&
                 !tristate.isSelected() && !international.isSelected();
         boolean isTriStateStudent = tristate.isSelected();
         boolean isIntlStudent = international.isSelected();
 
+        // adding the appropriate student
         if(isResidentStudent)
             addResidentStudent(studentProfile);
         else if(isNonResidentStudent)
@@ -339,16 +357,28 @@ public class MainController {
 
     }
 
+    /**
+     * prints the roster by student names
+     * @param event - the event to be handled
+     */
     @FXML
     void printByNames(ActionEvent event) {
         roster.printRosterByNames(output3);
     }
 
+    /**
+     * prints the roster by payment dates
+     * @param event - the event to be handled
+     */
     @FXML
     void printByPaymentDates(ActionEvent event) {
         roster.printRosterByPaymentDates(output3);
     }
 
+    /**
+     * prints the roster
+     * @param event - the event to be handled
+     */
     @FXML
     void printRoster(ActionEvent event) {
         roster.printRoster(output3);
@@ -359,9 +389,26 @@ public class MainController {
 
     }
 
+    /**
+     * Removes student from the roster
+     * @param event - the event to be handled
+     */
     @FXML
     void removeStudent(ActionEvent event) {
+        Profile studentProfile = buildStudentProfile();
 
+        if(studentProfile == null){
+            return;
+        }
+
+        int dummyCredits = 0;
+        Student studentToRemove = new Student(studentProfile, dummyCredits);
+        boolean removed = roster.remove(studentToRemove);
+
+        if(removed)
+            output.appendText("Student removed from roster. \n");
+        else
+            output.appendText("Student is not in the roster. \n");
     }
 
     @FXML
