@@ -18,6 +18,7 @@ public class MainController {
 
     private final int MINIMUM_NUM_CREDITS = 3;
     private final int MAXIMUM_NUM_CREDITS = 24;
+    private final int MAXIMUM_NUM_CREDITS_STUDY_ABROAD = 12;
     private final int MINIMUM_FULLTIME_CREDITS = 12;
     private final int INVALID = -1;
 
@@ -132,6 +133,26 @@ public class MainController {
     }
 
     /**
+     * Gets the selected major for payments tab
+     * @return - the major selected
+     * @throws InputMismatchException if major has not been selected
+     */
+    private Major getMajor2() throws InputMismatchException {
+        if(cs2.isSelected())
+            return Major.CS;
+        else if(it2.isSelected())
+            return Major.IT;
+        else if(ee2.isSelected())
+            return Major.EE;
+        else if(me2.isSelected())
+            return Major.ME;
+        else if(ba2.isSelected())
+            return Major.BA;
+        else
+            throw new InputMismatchException(); // Major hasn't been selected yet
+    }
+
+    /**
      * Builds the profile for a student
      * @return student profile
      */
@@ -155,7 +176,7 @@ public class MainController {
     }
 
     /**
-     * Builds the profile for a student
+     * Builds the profile for a student for payments tab
      * @return student profile
      */
     private Profile buildStudentProfile2(){
@@ -168,7 +189,7 @@ public class MainController {
 
         // getting student major
         try{
-            Major major = getMajor();
+            Major major = getMajor2();
             return new Profile(studentName, major);
         }catch (InputMismatchException majorNotSelected){
             output2.appendText("Student major has not been selected \n");
@@ -306,6 +327,7 @@ public class MainController {
      */
     public void addInternationalStudent(Profile profile){
         int creditHours = MINIMUM_NUM_CREDITS;
+        boolean isStudyAbroad = studyAbroad.isSelected();
 
         // validating credit hours
         try {
@@ -321,18 +343,21 @@ public class MainController {
         }else if(creditHours < MINIMUM_NUM_CREDITS){ // less than min
             output.appendText("Minimum credit hours is 3. \n");
             return;
-        }else if(creditHours > MAXIMUM_NUM_CREDITS){ // greater than max
+        }else if(!isStudyAbroad && creditHours > MAXIMUM_NUM_CREDITS){ // greater than max
             output.appendText("Credit hours exceed the maximum 24. \n");
             return;
         }
 
-        if(creditHours < MINIMUM_FULLTIME_CREDITS){ // part-time international not valid
+        if(!isStudyAbroad && creditHours < MINIMUM_FULLTIME_CREDITS){ // part-time international not valid
             output.appendText("International students must enroll at least 12 credits. \n");
+            return;
+        }else if(isStudyAbroad && creditHours > MINIMUM_FULLTIME_CREDITS){
+            output.appendText("Credit hours exceed the maximum 12. \n");
             return;
         }
 
         // adding student to roster
-        International internationalStudent = new International(profile, creditHours, studyAbroad.isSelected());
+        International internationalStudent = new International(profile, creditHours, isStudyAbroad);
         boolean studentAdded = roster.add(internationalStudent);
 
         if(studentAdded){

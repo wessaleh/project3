@@ -32,10 +32,13 @@ public class Roster {
 
         // traversing roster to find student
         for(int i = 0; i < size; i++) {
+            System.out.println(roster[i].getProfile());
             Profile currentStudentProfile = roster[i].getProfile();
 
             // student found
             if(currentStudentProfile.equals(profileToFind)) {
+                System.out.println("--------");
+                System.out.println(roster[i].getProfile());
                 return i;
             }
         }
