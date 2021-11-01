@@ -19,6 +19,7 @@ public class MainController {
     private final int MINIMUM_NUM_CREDITS = 3;
     private final int MAXIMUM_NUM_CREDITS = 24;
     private final int MINIMUM_FULLTIME_CREDITS = 12;
+    private final int INVALID = -1;
 
     @FXML
     private RadioButton ba;
@@ -148,6 +149,29 @@ public class MainController {
             return new Profile(studentName, major);
         }catch (InputMismatchException majorNotSelected){
             output.appendText("Student major has not been selected \n");
+        }
+
+        return null;
+    }
+
+    /**
+     * Builds the profile for a student
+     * @return student profile
+     */
+    private Profile buildStudentProfile2(){
+        // getting student name
+        String studentName = name2.getText();
+        if(studentName.isEmpty()){
+            output2.appendText("Student name field is empty. \n");
+            return null;
+        }
+
+        // getting student major
+        try{
+            Major major = getMajor();
+            return new Profile(studentName, major);
+        }catch (InputMismatchException majorNotSelected){
+            output2.appendText("Student major has not been selected \n");
         }
 
         return null;
@@ -360,9 +384,89 @@ public class MainController {
         output3.appendText("Calculation completed. \n");
     }
 
+    /**
+     * Gets the payment amount of
+     * @return payment amount
+     */
+    private double getPaymentAmount(){
+        String paymentInput = payments.getText();
+        if(paymentInput.isEmpty()){
+            output2.appendText("Invalid amount. \n");
+            return INVALID;
+        }
+
+        try{
+            double paymentAmount = Double.parseDouble(paymentInput);
+            if(paymentAmount <= 0){
+                output2.appendText("Invalid amount. \n");
+                return INVALID;
+            }
+
+            return paymentAmount;
+        }catch(NumberFormatException invalidPaymentAmount){
+            output2.appendText("Invalid amount. \n");
+            return INVALID;
+        }
+    }
+
+    /**
+     * Gets the date of payment
+     * @return the payment date
+     */
+    private Date getPaymentDate(){
+        if(paymentDate.getValue() == null){
+            output2.appendText("Payment date missing. \n");
+            return null;
+        }
+
+        String rawDate = paymentDate.getValue().toString();
+        String year = rawDate.substring(0,4);
+        String month = rawDate.substring(5,7);
+        String day = rawDate.substring(8);
+
+        String processedDate = month + "/" + day + "/" + year;
+        Date paymentDate = new Date(processedDate);
+
+        if(!paymentDate.isValid()){
+            output2.appendText("Payment date is invalid. \n");
+            return null;
+        }
+
+        return paymentDate;
+    }
+
+    private double getFinAidAmount(){
+        return 0;
+    }
+
+    /**
+     * Makes payment for a student
+     * @param event - the event to be handled
+     */
     @FXML
     void pay(ActionEvent event) {
+        Profile studentProfile = buildStudentProfile2();
+        if(studentProfile == null)
+            return;
 
+        int dummyCredits = 0;
+
+        Student studentToPay = new Student(studentProfile, dummyCredits);
+        Date paymentDate = getPaymentDate();
+        if(paymentDate == null)
+            return;
+
+        double paymentAmount = getPaymentAmount();
+        if(paymentAmount == INVALID){
+            return;
+        }
+
+        boolean paymentMade = roster.makeStudentPayment(studentToPay, paymentAmount, paymentDate);
+        if(paymentMade){
+            output2.appendText("Payment applied. \n");
+        }else{
+            output2.appendText("Invalid amount. \n");
+        }
     }
 
     /**

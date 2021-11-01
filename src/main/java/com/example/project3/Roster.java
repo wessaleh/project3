@@ -233,6 +233,10 @@ public class Roster {
      */
     public boolean makeStudentPayment(Student student, double paymentAmount, Date paymentDate) {
         int studentIndex = this.find(student);
+        if(studentIndex == INVALID){
+            return false;
+        }
+
         Student studentInRoster = this.roster[studentIndex];
 
         if(paymentAmount > studentInRoster.getBalance()){
