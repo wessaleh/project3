@@ -1,7 +1,3 @@
-/**
- * Controller class for GUI for tuition manager
- */
-
 package com.example.project3;
 
 import javafx.event.ActionEvent;
@@ -11,16 +7,19 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
 import java.util.InputMismatchException;
+
+/**
+ * Controller class for tuition manager GUI\
+ */
 
 public class MainController {
 
     private final int MINIMUM_NUM_CREDITS = 3;
     private final int MAXIMUM_NUM_CREDITS = 24;
-    private final int MAXIMUM_NUM_CREDITS_STUDY_ABROAD = 12;
     private final int MINIMUM_FULLTIME_CREDITS = 12;
     private final int INVALID = -1;
+    private final int MAX_FINAID_AMOUNT = 10000;
 
     @FXML
     private RadioButton ba;
@@ -103,7 +102,7 @@ public class MainController {
     @FXML
     private TextField tuitionOutput;
 
-    private Roster roster;
+    private final Roster roster;
 
     /**
      * Main Controller Constructor
@@ -460,10 +459,6 @@ public class MainController {
         return paymentDate;
     }
 
-    private double getFinAidAmount(){
-        return 0;
-    }
-
     /**
      * Makes payment for a student
      * @param event - the event to be handled
@@ -568,9 +563,33 @@ public class MainController {
             output.appendText("Student is not in the roster. \n");
     }
 
+    /**
+     * Sets the financial aid amount for a student
+     * @param event - the event to handle
+     */
     @FXML
     void setFinAid(ActionEvent event) {
+        Profile studentProfile = buildStudentProfile2();
+        if(studentProfile == null)
+            return;
 
+        int dummyCredits = 0;
+
+        Student studentToSet = new Student(studentProfile, dummyCredits);
+
+        try {
+            double finAidAmount = Double.parseDouble(finAid.getText());
+
+            if(finAidAmount > MAX_FINAID_AMOUNT || finAidAmount < 0){
+                output2.appendText("Invalid amount. \n");
+                return;
+            }
+
+            String message = roster.setFinancialAid(studentToSet, finAidAmount);
+            output2.appendText(message + "\n");
+        }catch(NumberFormatException invalidFinAid){
+            output2.appendText("Missing the amount. \n");
+        }
     }
 
     /**
