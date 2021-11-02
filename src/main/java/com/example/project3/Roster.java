@@ -2,6 +2,8 @@ package com.example.project3;
 
 import javafx.scene.control.TextArea;
 
+import java.text.DecimalFormat;
+
 /**
  * Roster class keeps track of a list of students
  * Clients can add, remove, change students and their status
@@ -216,6 +218,7 @@ public class Roster {
             return -1;
         }
 
+        this.roster[studentIndex].tuitionDue();
         return this.roster[studentIndex].getBalance();
     }
 

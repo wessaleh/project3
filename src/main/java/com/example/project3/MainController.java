@@ -7,6 +7,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 
 /**
@@ -20,6 +22,8 @@ public class MainController {
     private final int MINIMUM_FULLTIME_CREDITS = 12;
     private final int INVALID = -1;
     private final int MAX_FINAID_AMOUNT = 10000;
+    private final int NUM_DECIMAL_PLACES = 2;
+    private final int NUM_INT_PLACES = 1;
 
     @FXML
     private RadioButton ba;
@@ -522,6 +526,10 @@ public class MainController {
      */
     @FXML
     void printTuitionDue(ActionEvent event) {
+        DecimalFormat money_Format = new DecimalFormat("###,###.00");
+        money_Format.setMinimumFractionDigits(NUM_DECIMAL_PLACES);
+        money_Format.setMinimumIntegerDigits(NUM_INT_PLACES);
+
         Profile studentProfile = buildStudentProfile();
 
         if(studentProfile == null){
@@ -537,7 +545,7 @@ public class MainController {
             output.appendText("Student is not in the roster. \n");
         }else{
             tuitionOutput.clear();
-            tuitionOutput.appendText(tuition + "");
+            tuitionOutput.appendText(money_Format.format(tuition));
         }
     }
 
