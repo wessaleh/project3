@@ -216,8 +216,7 @@ public class Roster {
             return -1;
         }
 
-        this.roster[studentIndex].tuitionDue();
-        return this.roster[studentIndex].tuition;
+        return this.roster[studentIndex].getBalance();
     }
 
     /**
@@ -358,7 +357,7 @@ public class Roster {
             if(sortedRoster[i] == null){
                 break;
             }
-            textArea.appendText(this.roster[i].toString() + "\n");
+            textArea.appendText(sortedRoster[i].toString() + "\n");
         }
 
         textArea.appendText("* end of roster ** \n");
