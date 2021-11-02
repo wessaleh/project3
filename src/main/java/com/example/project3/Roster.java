@@ -288,8 +288,6 @@ public class Roster {
 
         if(this.roster[studentIndex].creditHours < fullTimeCreditHours){
             return "Part-time student doesn't qualify for the award.";
-        }else if(this.roster[studentIndex].finAid > 0){
-            return "Awarded once already.";
         }
 
         this.roster[studentIndex].setFinAid(finAidAmount);
